@@ -10,6 +10,8 @@ This is defensive security work: how to *review* and *respond*, not how to attac
 
 AI agents are a new attack surface: they read untrusted input, hold context and memory, and call tools with real permissions. Reviewing one is not the same as reviewing a web app. This repo turns an open-ended "is this agent safe?" into a repeatable process — intake, an eight-domain review, a defensible risk tier, and a Go / No-Go recommendation — plus what the on-call analyst does when prevention fails.
 
+**Where to start:** reviewing an agent tomorrow? Begin with the [methodology](methodology/how-to-review-an-ai-agent.pdf). Working in a SOC? Begin with the [incident-response playbooks](incident-response/).
+
 ## What's inside
 
 ### 📋 Methodology
@@ -23,20 +25,26 @@ Hand-to-a-developer checklists, one per high-value area:
 - **[Tool Approval Checklist](playbooks/tool-approval-checklist.pdf)** — semi-hostile tools, least privilege, and the actions that must be gated.
 
 ### 🚨 Incident response
-Prevention checklists say how to *stop* an attack. These say what to do when it already happened:
-- **[Prompt Injection — Incident Response](incident-response/prompt-injection-incident-response.pdf)** — NIST 800-61 lifecycle adapted for agents: classify, contain (an agent has an identity, memory, and live tools), collect evidence, and write the detection so it fires next time. Includes MITRE ATLAS technique tags and Sentinel-style detection logic.
+Prevention checklists say how to *stop* an attack. These say what to do when it already happened — covering the two fundamental agent incident types:
+- **[Prompt Injection — Incident Response](incident-response/prompt-injection-incident-response.pdf)** — the agent that was *tricked*: injected instructions in content it read. NIST 800-61 lifecycle adapted for agents, MITRE ATLAS technique tags, and KQL-style detection logic.
+- **[Agent Compromise — Incident Response](incident-response/agent-compromise-incident-response.pdf)** — the agent that is *owned*: stolen credentials, hijacked identity, implanted memory, or a trojaned tool/config. Five compromise classes, identity-blast-radius severity, and revocation-first containment.
 
 ## The eight security domains
 
-1. LLM & Prompt Security · 2. RAG & Data Security · 3. Tool & API Security · 4. Agentic Risk · 5. Adversarial ML · 6. Identity & Access · 7. Runtime & Guardrails · 8. Observability & SOC Monitoring
+| # | Domain | In one line |
+|---|---|---|
+| 1 | LLM & Prompt Security | Every channel that carries text into the model is an injection surface |
+| 2 | RAG & Data Security | Poisoning, permission bypass, and cross-user leakage in retrieval |
+| 3 | Tool & API Security | Treat every tool as semi-hostile; gate high-impact actions |
+| 4 | Agentic Risk | Kill switch, memory poisoning, bounded blast radius |
+| 5 | Adversarial ML | Jailbreaks, evasion, and multiturn / indirect manipulation |
+| 6 | Identity & Access | One unique identity per agent, least privilege, JIT elevation |
+| 7 | Runtime & Guardrails | Deterministic controls in code, human-in-the-loop for consequence |
+| 8 | Observability & SOC | Logged to the SIEM; the SOC can identify, detect, and respond |
 
 ## Frameworks referenced
 
-OWASP LLM Top 10 · OWASP Agentic Top 10 · OWASP API Top 10 · MITRE ATLAS · NIST AI RMF · ISO/IEC 42001 — findings are mapped through a single crosswalk so one review addresses many obligations at once.
-
-## Roadmap
-
-See **[roadmap.md](roadmap.md)**. In progress: extending the incident-response set (agent compromise, data-leakage investigation, model-abuse detection) and adding worked sample assessments.
+OWASP LLM Top 10 · OWASP Agentic Top 10 · OWASP API Top 10 · MITRE ATLAS · NIST AI RMF · NIST 800-61 (incident response) · ISO/IEC 42001 — findings are mapped through a single crosswalk so one review addresses many obligations at once.
 
 ---
 
